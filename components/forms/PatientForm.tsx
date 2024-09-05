@@ -16,7 +16,7 @@ import { createUser } from "@/lib/actions/patients.action"
  
 export enum FieldType {
     INPUT = "input",
-    SElECT = "select",
+    SELECT = "select",
     TEXTAREA = "textarea",
     CHECKBOX = "checkbox",
     DATA_PICKER = "dataPicker",

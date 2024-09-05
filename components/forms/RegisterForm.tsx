@@ -224,7 +224,7 @@ console.log(newPatient)
 
           {/* PRIMARY CARE PHYSICIAN */}
           <CustomFormField
-            fieldType={FieldType.SElECT}
+            fieldType={FieldType.SELECT}
             control={form.control}
             name="primaryPhysician"
             label="Primary care physician"
