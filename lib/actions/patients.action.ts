@@ -34,28 +34,17 @@ export const getUser = async (userId: string) => {
 export const registerPatient = async ({identificationDocument,...patient}: RegisterUserParams) => {
     try {
         let file;
-        // if(identificationDocument){
-        //     const inputFile = 
-        //     new File(
-        //         [identificationDocument?.get("blobFile")],
-        //         identificationDocument?.get("fileName"),
-        //         { type: identificationDocument?.get("blobFile").type } 
-        //       );
+        if(identificationDocument){
+            const inputFile = 
+            new File(
+                [identificationDocument?.get("blobFile")],
+                identificationDocument?.get("fileName"),
+                { type: identificationDocument?.get("blobFile").type } 
+              );
               
-        //         file = await storage.createFile(NEXT_PUBLIC_BUCKET_ID!, ID.unique(), inputFile)
-        //     }
-            if (identificationDocument) {
-                const blobFile = identificationDocument.get("blobFile");
-              
-                if (blobFile) {
-                  const inputFile = new File(
-                    [blobFile],
-                    identificationDocument.get("fileName") || "defaultFilename",
-                    { type: blobFile.type || "application/octet-stream" }
-                  );
-              
-                  file = await storage.createFile(NEXT_PUBLIC_BUCKET_ID!, ID.unique(), inputFile);
-                }}
+                file = await storage.createFile(NEXT_PUBLIC_BUCKET_ID!, ID.unique(), inputFile)
+            }
+
             const newPatient = await databases.createDocument(
                 DATABASE!,
                 PATIENT_COLLECTION_ID!,
