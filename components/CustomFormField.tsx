@@ -2,7 +2,6 @@
 import React from "react";
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -92,7 +91,7 @@ const RenderInput = ({
             <DatePicker
               showTimeSelect={props.showTimeSelect ?? false}
               selected={field.value}
-              onChange={(date: Date) => field.onChange(date)}
+              onChange={(date: Date | null) => field.onChange(date)}
               timeInputLabel="Time:"
               dateFormat={props.dateFormat ?? "MM/dd/yyyy"}
               wrapperClassName="date-picker"
@@ -148,7 +147,7 @@ const RenderInput = ({
   }
 };
 const CustomFormField = (props: CustomFormProps) => {
-  const { control, name, placeholder, fieldType, label, iconAlt, iconSrc } =
+  const { control, name,  fieldType, label, } =
     props;
   return (
     <FormField
