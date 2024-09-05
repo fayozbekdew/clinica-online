@@ -1,6 +1,10 @@
 "use server"
-import { users } from "../appwrite.config"
+import { DATABASE, databases, NEXT_PUBLIC_BUCKET_ID, NEXT_PUBLIC_ENDPOINT,
+     PATIENT_COLLECTION_ID,
+     PROJECT_ID,
+     storage, users } from "../appwrite.config"
 import { ID } from "node-appwrite";
+import { InputFile } from 'node-appwrite/file'
 
 export const createUser = async ({name,email,phone}: CreateUserParams) => {
     // return JSON.stringify(props)
@@ -17,3 +21,51 @@ export const createUser = async ({name,email,phone}: CreateUserParams) => {
         console.log('Error')
     }
 }
+
+export const getUser = async (userId: string) => {
+    try {
+        const user = await users.get(userId)
+        return JSON.parse(JSON.stringify(user))
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const registerPatient = async ({identificationDocument,...patient}: RegisterUserParams) => {
+    try {
+        let file;
+        if(identificationDocument){
+            const inputFile = 
+            new File(
+                [identificationDocument?.get("blobFile")],
+                identificationDocument?.get("fileName"),
+                { type: identificationDocument?.get("blobFile").type } 
+              );
+              
+                file = await storage.createFile(NEXT_PUBLIC_BUCKET_ID!, ID.unique(), inputFile)
+            }
+            console.log({
+                identificationDocumentId: file?.$id ? file.$id : null,
+                    identificationDocumentUrl: file?.$id
+                    ? `${NEXT_PUBLIC_ENDPOINT}/storage/buckets/${NEXT_PUBLIC_BUCKET_ID}/files/${file.$id}/view??project=${PROJECT_ID}`
+                    : null,
+                  ...patient,
+            })
+            const newPatient = await databases.createDocument(
+                DATABASE!,
+                PATIENT_COLLECTION_ID!,
+                ID.unique(),
+                {
+                    identificationDocumentId: file?.$id ? file.$id : null,
+                    identificationDocumentUrl: file?.$id
+                    ? `${NEXT_PUBLIC_ENDPOINT}/storage/buckets/${NEXT_PUBLIC_BUCKET_ID}/files/${file.$id}/view??project=${PROJECT_ID}`
+                    : null,
+                  ...patient,
+                }
+                ) 
+        return JSON.parse(JSON.stringify(newPatient))
+    } catch (error) {
+        console.log(error)
+      }
+}
+
