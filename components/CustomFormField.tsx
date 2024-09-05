@@ -101,7 +101,7 @@ const RenderInput = ({
       );
     case FieldType.SKELETON:
       return props.renderSkeleton ? props.renderSkeleton(field) : null;
-    case FieldType.SElECT:
+    case FieldType.SELECT:
       return (
         <FormControl>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
