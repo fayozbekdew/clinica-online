@@ -68,3 +68,10 @@ export const formatDateTime = (dateString: Date | string, timeZone: string = Int
     timeOnly: formattedTime,
   };
 };
+export function encryptKey(passkey: string) {
+  return btoa(passkey);
+}
+
+export function decryptKey(passkey: string) {
+  return atob(passkey);
+}
