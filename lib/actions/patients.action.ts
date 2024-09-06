@@ -3,8 +3,7 @@ import { DATABASE, databases, NEXT_PUBLIC_BUCKET_ID, NEXT_PUBLIC_ENDPOINT,
      PATIENT_COLLECTION_ID,
      PROJECT_ID,
      storage, users } from "../appwrite.config"
-import { ID } from "node-appwrite";
-import { InputFile } from 'node-appwrite/file'
+import { ID,Query } from "node-appwrite";
 
 export const createUser = async ({name,email,phone}: CreateUserParams) => {
     // return JSON.stringify(props)
@@ -61,5 +60,18 @@ export const registerPatient = async ({identificationDocument,...patient}: Regis
     } catch (error) {
         console.log(error)
       }
+}
+
+export const getPatient = async (userId: string) => {
+    try {
+        const patient = await databases.listDocuments(
+            DATABASE!,
+            PATIENT_COLLECTION_ID!,
+            [Query.equal('userId',[userId])]
+        )
+        return JSON.parse(JSON.stringify(patient.documents[0]))
+    } catch (error) {
+        console.log(error)
+    }
 }
 
